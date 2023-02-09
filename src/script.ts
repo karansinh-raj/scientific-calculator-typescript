@@ -83,7 +83,7 @@ class Calculator{
     }
 
     // append newly added number to equation
-    appendNumber(number: string){
+    appendNumber(number: string): void{
 
         // to prevent multiple zeroes
         if(this.equation === '0' && number === '0') return;
@@ -133,7 +133,7 @@ class Calculator{
     }
 
     // to compute binary operations
-    compute(){
+    compute(): void{
         try{
             let computation: string = eval(this.equation);
             equationText.innerText = `${this.equation} =`;
@@ -159,7 +159,7 @@ class Calculator{
     }
 
     // to toggle the sign of number
-    signToggle(){
+    signToggle(): void{
         
         if(this.lastComputed !== 0){
             this.equation = this.lastComputed as unknown as string;
@@ -176,7 +176,7 @@ class Calculator{
     }
 
     // to compute the unary operations
-    unaryOperation(operation: string){
+    unaryOperation(operation: string): void{
 
         if(this.lastComputed !== 0){
             this.equation = this.lastComputed as unknown as string;
@@ -329,8 +329,7 @@ class Calculator{
     }
 
     // to print direct values of const like PI
-    printDirectValue(value: string){
-
+    printDirectValue(value: string): void{
         let computation: number;
         switch(value){
             case 'pi':
@@ -354,7 +353,7 @@ class Calculator{
     }
 
     // to clear all equation, output text
-    clear(){
+    clear(): void{
         this.equation = '0';
         this.isDecimalLegal = true;
         this.isOperatorLegal = true;
@@ -365,7 +364,7 @@ class Calculator{
     }
 
     // to backspace one char from equation
-    backspace(){
+    backspace(): void{
         this.equation = this.equation.toString().slice(0,-1);
         if(this.equation===''){
             this.equation = '0';
@@ -378,7 +377,7 @@ class Calculator{
 
 // handling dropdowns
 // trigonometry dropdown
-trigonometryCellButton.onclick = ()=>{
+trigonometryCellButton.onclick = (): void=>{
     if((document.getElementById("trigonometry-cell-content") as HTMLDivElement).style.display==="block"){
         (document.getElementById("trigonometry-cell-content") as HTMLDivElement).style.display="none";
     }else{
@@ -387,7 +386,7 @@ trigonometryCellButton.onclick = ()=>{
 }
 
 // function dropdown
-functionCellButton.onclick = ()=>{
+functionCellButton.onclick = (): void=>{
     if((document.getElementById("function-cell-content") as HTMLDivElement).style.display==="block"){
         (document.getElementById("function-cell-content") as HTMLDivElement).style.display="none";
     }else{
@@ -400,7 +399,7 @@ const calculator: Calculator = new Calculator();
 
 // handling buttons click
 numberButtons.forEach(button =>{
-    button.addEventListener('click', ()=>{
+    button.addEventListener('click', (): void=>{
         if(calculator.feMode){
             calculator.feMode = false;
             feButton.style.borderBottom = "none";
@@ -410,7 +409,7 @@ numberButtons.forEach(button =>{
 });
 
 unaryOperationButtons.forEach(button =>{
-    button.addEventListener('click', ()=>{
+    button.addEventListener('click', (): void=>{
         if(calculator.feMode){
             calculator.feMode = false;
             feButton.style.borderBottom = "none";
@@ -420,7 +419,7 @@ unaryOperationButtons.forEach(button =>{
 });
 
 directValueButtons.forEach(button =>{
-    button.addEventListener('click', ()=>{
+    button.addEventListener('click', (): void=>{
         if(calculator.feMode){
             calculator.feMode = false;
             feButton.style.borderBottom = "none";
@@ -429,23 +428,23 @@ directValueButtons.forEach(button =>{
     });
 });
 
-equalButton.onclick = ()=>{
+equalButton.onclick = (): void=>{
     calculator.compute();
 }
 
-allClearButton.onclick = ()=>{
+allClearButton.onclick = (): void=>{
     calculator.clear();
 }
 
-backspaceButton.onclick = ()=>{
+backspaceButton.onclick = (): void =>{
     calculator.backspace();
 }
 
-signToggleButton.onclick = ()=>{
+signToggleButton.onclick = (): void=>{
     calculator.signToggle();
 }
 
-feButton.onclick = ()=>{
+feButton.onclick = (): void=>{
     calculator.equationToExponential();
     if(calculator.feMode){
         feButton.style.borderBottom = "2px solid var(--primaryColor)";
@@ -454,7 +453,7 @@ feButton.onclick = ()=>{
     }
 }
 
-degButton.onclick = ()=>{
+degButton.onclick = (): void=>{
     if(calculator.degreeMode){
         degButton.innerText = "RAD";
         calculator.degreeMode = false;
@@ -464,7 +463,7 @@ degButton.onclick = ()=>{
     }
 }
 
-powerCellButton.onclick = ()=>{
+powerCellButton.onclick = (): void=>{
     turnOnPowerMode();
 
     if(calculator.powerMode){
@@ -476,21 +475,21 @@ powerCellButton.onclick = ()=>{
     }
 }
 
-memoryStoreButton.onclick = ()=>{
+memoryStoreButton.onclick = (): void=>{
     if(calculator.getEquation() !== ''){
         localStorage.setItem('calculator-item',calculator.getEquation());
         toggleClearAndReadButtons();
     }
 }
 
-memoryReadButton.onclick = ()=>{
+memoryReadButton.onclick = (): void=>{
     if(localStorage.getItem('calculator-item') !== null){
         calculator.clear();
         calculator.appendNumber(localStorage.getItem('calculator-item') as string);
     }
 }
 
-memoryPlusButton.onclick = ()=>{
+memoryPlusButton.onclick = (): void=>{
 
     const current = parseFloat(calculator.getEquation());
     if(localStorage.getItem('calculator-item') !== null){
@@ -502,7 +501,7 @@ memoryPlusButton.onclick = ()=>{
     }
 }
 
-memoryMinusButton.onclick = ()=>{
+memoryMinusButton.onclick = (): void=>{
 
     const current = parseFloat(calculator.getEquation());
     if(localStorage.getItem('calculator-item') !== null){
@@ -514,7 +513,7 @@ memoryMinusButton.onclick = ()=>{
     }
 }
 
-memoryClearButton.onclick = ()=>{
+memoryClearButton.onclick = (): void=>{
     if(localStorage.getItem('calculator-item')){
         localStorage.removeItem('calculator-item');
         toggleClearAndReadButtons();
@@ -522,7 +521,7 @@ memoryClearButton.onclick = ()=>{
 }
 
 // keyboard events
-window.addEventListener('keydown', (e: KeyboardEvent)=>{
+window.addEventListener('keydown', (e: KeyboardEvent): void=>{
     if(calculator.feMode){
         calculator.feMode = false;
         feButton.style.borderBottom = "none";
@@ -546,7 +545,7 @@ window.addEventListener('keydown', (e: KeyboardEvent)=>{
 });
 
 // to close dropdown on any other click
-window.onclick = function(event: Event) {
+window.onclick = function(event: Event): void {
     if (!(event.target as HTMLElement).matches('.function-cell-button')) {
 
       let dropdowns: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("function-cell-content") as HTMLCollectionOf<HTMLElement>;
@@ -576,7 +575,7 @@ window.onclick = function(event: Event) {
 }
 
 // Utility functions
-function turnOnPowerMode(){
+function turnOnPowerMode(): void{
     if(calculator.powerMode){
         (document.getElementById('sqrOrCube') as HTMLElement).setAttribute('data-unary-operation',"sqr");
         (document.getElementById('sqrOrCube') as HTMLElement).innerHTML = "x<sup>2</sup>";
@@ -611,7 +610,7 @@ function turnOnPowerMode(){
 }
 
 // to toggle state of MC and MR button based on memory value
-function toggleClearAndReadButtons(){
+function toggleClearAndReadButtons(): void{
     if(localStorage.getItem('calculator-item') === null){
         memoryClearButton.style.opacity = '0.1';
         memoryReadButton.style.opacity = '0.1';
