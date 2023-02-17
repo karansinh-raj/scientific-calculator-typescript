@@ -64,6 +64,10 @@ class Calculator{
         return this.equation;
     }
 
+    getLastComputed(): number{
+        return this.lastComputed;
+    }
+
     // returns current equation
     equationToExponential(): void{
         if(this.lastComputed !== 0){
@@ -116,8 +120,14 @@ class Calculator{
             }
         }
 
-        if(number === ')' && !(this.equation.toString().includes('('))){
+        // same number of parenthesis
+        if(number === ')' && ((this.equation.toString().split(")").length - 1) >= (this.equation.toString().split("(").length - 1))){
             return;
+        }
+
+        // automatically add * if two parenthesis (1)(2) -> (1)*(2)
+        if(number === '(' && this.equation.toString().slice(-1) === ')'){
+            this.equation += '*';
         }
 
         // append number to equation
@@ -476,22 +486,34 @@ powerCellButton.onclick = (): void=>{
 }
 
 memoryStoreButton.onclick = (): void=>{
-    if(calculator.getEquation() !== ''){
-        localStorage.setItem('calculator-item',calculator.getEquation());
+    if(calculator.getEquation() !== '' && !(isNaN(calculator.getEquation() as unknown as number))){
+        if(calculator.getEquation() == '0'){
+            localStorage.setItem('calculator-item',calculator.getLastComputed() as unknown as string);
+        }else{
+            localStorage.setItem('calculator-item',calculator.getEquation());
+        }
         toggleClearAndReadButtons();
     }
 }
 
 memoryReadButton.onclick = (): void=>{
     if(localStorage.getItem('calculator-item') !== null){
-        calculator.clear();
+        if(!(calculator.getEquation().toString().includes('+') || calculator.getEquation().toString().includes('-') || calculator.getEquation().toString().includes('*') || calculator.getEquation().toString().includes('/') || calculator.getEquation().toString().includes('%') || calculator.getEquation().toString().includes('**'))){
+            calculator.clear();
+        }
         calculator.appendNumber(localStorage.getItem('calculator-item') as string);
     }
 }
 
 memoryPlusButton.onclick = (): void=>{
-
-    const current = parseFloat(calculator.getEquation());
+    let current: number = 0;
+    if(calculator.getEquation() !== ''){
+        if(calculator.getEquation() == '0'){
+            current = calculator.getLastComputed();
+        }else{
+            current = parseFloat(calculator.getEquation());
+        }
+    }
     if(localStorage.getItem('calculator-item') !== null){
         let memoryValue: number = Number(localStorage.getItem('calculator-item'));
         localStorage.setItem('calculator-item', (memoryValue + current) as unknown as string);
@@ -502,8 +524,15 @@ memoryPlusButton.onclick = (): void=>{
 }
 
 memoryMinusButton.onclick = (): void=>{
+    let current: number = 0;
 
-    const current = parseFloat(calculator.getEquation());
+    if(calculator.getEquation() !== ''){
+        if(calculator.getEquation() == '0'){
+            current = calculator.getLastComputed();
+        }else{
+            current = parseFloat(calculator.getEquation());
+        }
+    }
     if(localStorage.getItem('calculator-item') !== null){
         let memoryValue = Number(localStorage.getItem('calculator-item'));
         localStorage.setItem('calculator-item', (memoryValue - current) as unknown as string);
