@@ -20,6 +20,13 @@ const memoryMinusButton = document.getElementById('mMinus-btn');
 const memoryClearButton = document.getElementById('mc-btn');
 const powerCellButton = document.getElementById('power-cell');
 class Calculator {
+    equation;
+    isDecimalLegal;
+    feMode;
+    powerMode;
+    isOperatorLegal;
+    degreeMode;
+    lastComputed;
     // to init
     constructor() {
         // state to store all equations/ numbers
